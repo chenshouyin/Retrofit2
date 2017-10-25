@@ -47,18 +47,18 @@ public abstract class DefaultObserver<T extends BasicResponse> implements Observ
      */
     public final static int TOKEN_EXPIRED = 202;
 
-    private BaseActivity activity;
+    private Activity activity;
     //  Activity 是否在执行onStop()时取消订阅
     private boolean isAddInStop = false;
     private CommonDialogUtils dialogUtils;
 
-    public DefaultObserver(BaseActivity activity) {
+    public DefaultObserver(Activity activity) {
         this.activity = activity;
         dialogUtils = new CommonDialogUtils();
         dialogUtils.showProgress(activity);
     }
 
-    public DefaultObserver(BaseActivity activity, String message) {
+    public DefaultObserver(Activity activity, String message) {
         this.activity = activity;
         dialogUtils = new CommonDialogUtils();
         dialogUtils.showProgress(activity, message);
@@ -130,10 +130,13 @@ public abstract class DefaultObserver<T extends BasicResponse> implements Observ
         String message = response.getMessage();
         switch (code) {
             case TOKEN_EXPIRED:
-
-                break;
             case TOKEN_INCORRECT:
-                new RequestHelper(activity).signIn();
+                new RequestHelper((BaseActivity) activity, new RequestHelper.RequestCallback() {
+                    @Override
+                    public void onTokenUpdateSucceed() {
+                        onTokenUpdateSuccess();
+                    }
+                }).refreshToken();
                 break;
             default:
                 showToast(message);
@@ -141,13 +144,14 @@ public abstract class DefaultObserver<T extends BasicResponse> implements Observ
         }
     }
 
+    public void onTokenUpdateSuccess(){}
+
     protected void showToast(String message) {
         if (TextUtils.isEmpty(message)) {
             ToastUtils.show(R.string.response_return_error);
         } else {
             ToastUtils.show(message);
         }
-
     }
 
     /**

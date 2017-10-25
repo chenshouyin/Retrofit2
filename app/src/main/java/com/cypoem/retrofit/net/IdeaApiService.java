@@ -1,7 +1,9 @@
 package com.cypoem.retrofit.net;
 
 import com.cypoem.retrofit.module.BasicResponse;
+import com.cypoem.retrofit.module.request.LoginRequest;
 import com.cypoem.retrofit.module.request.RefreshTokenRequest;
+import com.cypoem.retrofit.module.response.LoginResponse;
 import com.cypoem.retrofit.module.response.MeiZi;
 import com.cypoem.retrofit.module.response.RefreshTokenResponseBean;
 
@@ -26,25 +28,15 @@ public interface IdeaApiService {
     String HOST = "http://gank.io/";
     String API_SERVER_URL = HOST + "api/data/";
 
-
+    @Headers("Cache-Control: public, max-age=100")//设置缓存 缓存时间为100s
     @GET("福利/10/1")
     Observable<BasicResponse<List<MeiZi>>> getMezi();
-
-    /**
-     * @param page
-     * @param number
-     * @return
-     */
-    @Headers("Cache-Control: public, max-age=100")//设置缓存 缓存时间为100s
-    @GET("everySay/selectAll.do")
-    Observable<BasicResponse<List<MeiZi>>> lookBack();
 
     /**登录
      * @return
      */
     @POST("everySay/selectAll.do")
-    Observable<BasicResponse> sign();
-
+    Observable<LoginResponse> login(@Body LoginRequest request);
 
     /**登录
      * @return

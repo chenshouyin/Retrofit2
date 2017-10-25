@@ -3,6 +3,7 @@ package com.cypoem.retrofit.fragment;
 import android.os.Bundle;
 
 import com.cypoem.retrofit.R;
+import com.cypoem.retrofit.activity.BaseActivity;
 import com.cypoem.retrofit.module.BasicResponse;
 import com.cypoem.retrofit.module.response.MeiZi;
 import com.cypoem.retrofit.net.DefaultObserver;
@@ -41,7 +42,7 @@ public class TestFragment extends BaseFragment {
                     @Override
                     public void onSuccess(BasicResponse<List<MeiZi>> response) {
                         List<MeiZi> results = response.getResults();
-                        showToast("请求成功，妹子个数为"+results.size());
+                        showToast("请求成功，妹子个数为" + results.size());
                     }
                 });
     }

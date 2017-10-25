@@ -3,8 +3,11 @@ package com.cypoem.retrofit.net;
 
 import com.cypoem.retrofit.activity.BaseActivity;
 import com.cypoem.retrofit.module.BasicResponse;
+import com.cypoem.retrofit.module.request.LoginRequest;
 import com.cypoem.retrofit.module.request.RefreshTokenRequest;
+import com.cypoem.retrofit.module.response.LoginResponse;
 import com.cypoem.retrofit.module.response.RefreshTokenResponseBean;
+import com.cypoem.retrofit.utils.SharedPreferencesHelper;
 import com.cypoem.retrofit.utils.ToastUtils;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -29,18 +32,20 @@ public class RequestHelper {
         this.callback = callback;
     }
 
-    public void signIn() {
-
-
+    public void login() {
+        LoginRequest loginRequest = new LoginRequest(activity);
+        loginRequest.setUserId("123456");
+        loginRequest.setPassword("123123");
         IdeaApi.getApiService()
-                .sign()
+                .login(loginRequest)
                 .subscribeOn(Schedulers.io())
-                .compose(activity.<BasicResponse>bindToLifecycle())
+                .compose(activity.<LoginResponse>bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DefaultObserver<BasicResponse>(activity) {
+                .subscribe(new DefaultObserver<LoginResponse>(activity) {
                     @Override
-                    public void onSuccess(BasicResponse response) {
-                        int code = response.getCode();
+                    public void onSuccess(LoginResponse response) {
+                        ToastUtils.show("登录成功！获取到token"+response.getToken()+",可以存储到本地了");
+                        SharedPreferencesHelper.put(activity,"token",response.getToken());
                     }
                 });
     }
@@ -64,7 +69,7 @@ public class RequestHelper {
                     public void onException(ExceptionReason reason) {
                         super.onException(reason);
                         if (times < 3) {
-                            signIn();
+                            login();
                             ToastUtils.show("出错了..." + times);
                         }
                         times++;

@@ -5,5 +5,6 @@ package com.cypoem.retrofit.module.request;
  * Description:
  */
 
-public class RefreshTokenRequest {
+public class RefreshTokenRequest extends BasicRequest {
+
 }

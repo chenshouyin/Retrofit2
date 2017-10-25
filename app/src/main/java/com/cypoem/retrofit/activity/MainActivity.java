@@ -9,6 +9,7 @@ import com.cypoem.retrofit.module.BasicResponse;
 import com.cypoem.retrofit.module.response.MeiZi;
 import com.cypoem.retrofit.net.DefaultObserver;
 import com.cypoem.retrofit.net.IdeaApi;
+import com.cypoem.retrofit.net.RequestHelper;
 
 import java.util.List;
 
@@ -37,7 +38,10 @@ public class MainActivity extends BaseActivity {
             }
         });
     }
-
+    //  登录 成功后保存token
+    public void login(View view) {
+        new RequestHelper(this).login();
+    }
 
     public void getData() {
         IdeaApi.getApiService()
@@ -45,11 +49,20 @@ public class MainActivity extends BaseActivity {
                 .compose(this.<BasicResponse<List<MeiZi>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DefaultObserver<BasicResponse<List<MeiZi>>>(this,"正在加载...") {
+                .subscribe(new DefaultObserver<BasicResponse<List<MeiZi>>>(this, "正在加载...") {
                     @Override
                     public void onSuccess(BasicResponse<List<MeiZi>> response) {
                         List<MeiZi> results = response.getResults();
-                        showToast("请求成功，妹子个数为"+results.size());
+                        showToast("请求成功，妹子个数为" + results.size());
+                    }
+
+                    /**
+                     * token刷新成功后重新请求数据
+                     */
+                    @Override
+                    public void onTokenUpdateSuccess() {
+                        super.onTokenUpdateSuccess();
+                        getData();
                     }
                 });
     }
