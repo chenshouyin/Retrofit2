@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.cypoem.retrofit.R;
 import com.cypoem.retrofit.module.BasicResponse;
-import com.cypoem.retrofit.module.bean.MeiZi;
+import com.cypoem.retrofit.module.response.MeiZi;
 import com.cypoem.retrofit.net.DefaultObserver;
 import com.cypoem.retrofit.net.IdeaApi;
 

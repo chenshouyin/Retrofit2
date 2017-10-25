@@ -6,7 +6,7 @@ import android.widget.Button;
 
 import com.cypoem.retrofit.R;
 import com.cypoem.retrofit.module.BasicResponse;
-import com.cypoem.retrofit.module.bean.MeiZi;
+import com.cypoem.retrofit.module.response.MeiZi;
 import com.cypoem.retrofit.net.DefaultObserver;
 import com.cypoem.retrofit.net.IdeaApi;
 
@@ -45,7 +45,7 @@ public class MainActivity extends BaseActivity {
                 .compose(this.<BasicResponse<List<MeiZi>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DefaultObserver<BasicResponse<List<MeiZi>>>(this) {
+                .subscribe(new DefaultObserver<BasicResponse<List<MeiZi>>>(this,"正在加载...") {
                     @Override
                     public void onSuccess(BasicResponse<List<MeiZi>> response) {
                         List<MeiZi> results = response.getResults();

@@ -6,7 +6,7 @@ import android.content.Context;
 import com.cypoem.retrofit.utils.Utils;
 
 /**
- * Created by edianzu on 2017/4/18.
+ * Created by zhpan on 2017/4/18.
  */
 
 public class App extends Application {

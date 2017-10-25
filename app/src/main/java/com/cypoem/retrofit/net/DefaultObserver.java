@@ -5,17 +5,21 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.cypoem.retrofit.R;
+import com.cypoem.retrofit.activity.BaseActivity;
 import com.cypoem.retrofit.module.BasicResponse;
 import com.cypoem.retrofit.utils.CommonDialogUtils;
 import com.cypoem.retrofit.utils.LogUtils;
 import com.cypoem.retrofit.utils.ToastUtils;
 import com.google.gson.JsonParseException;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
+
 import org.json.JSONException;
+
 import java.io.InterruptedIOException;
 import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.text.ParseException;
+
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
@@ -30,22 +34,34 @@ import static com.cypoem.retrofit.net.DefaultObserver.ExceptionReason.UNKNOWN_ER
  */
 
 public abstract class DefaultObserver<T extends BasicResponse> implements Observer<T> {
-    private Activity activity;
+    /**
+     * 请求成功
+     */
+    public final static int REQUEST_SUCCESS = 200;
+    /**
+     * token错误
+     */
+    public final static int TOKEN_INCORRECT = 201;
+    /**
+     * token过期
+     */
+    public final static int TOKEN_EXPIRED = 202;
+
+    private BaseActivity activity;
     //  Activity 是否在执行onStop()时取消订阅
     private boolean isAddInStop = false;
     private CommonDialogUtils dialogUtils;
-    public DefaultObserver(Activity activity) {
+
+    public DefaultObserver(BaseActivity activity) {
         this.activity = activity;
-        dialogUtils=new CommonDialogUtils();
+        dialogUtils = new CommonDialogUtils();
         dialogUtils.showProgress(activity);
     }
 
-    public DefaultObserver(Activity activity, boolean isShowLoading) {
+    public DefaultObserver(BaseActivity activity, String message) {
         this.activity = activity;
-        dialogUtils=new CommonDialogUtils();
-        if (isShowLoading) {
-            dialogUtils.showProgress(activity,"Loading...");
-        }
+        dialogUtils = new CommonDialogUtils();
+        dialogUtils.showProgress(activity, message);
     }
 
     @Override
@@ -59,17 +75,17 @@ public abstract class DefaultObserver<T extends BasicResponse> implements Observ
         if (!response.isError()) {
             onSuccess(response);
         } else {
-            onFail(response);
+            onFail(response, response.getCode());
         }
-        /*if (response.getCode() == 200) {
+        /*if (response.getCode() == REQUEST_SUCCESS) {
             onSuccess(response);
         } else {
             onFail(response);
         }*/
     }
 
-    private void dismissProgress(){
-        if(dialogUtils!=null){
+    private void dismissProgress() {
+        if (dialogUtils != null) {
             dialogUtils.dismissProgress();
         }
     }
@@ -110,13 +126,28 @@ public abstract class DefaultObserver<T extends BasicResponse> implements Observ
      *
      * @param response 服务器返回的数据
      */
-    public void onFail(T response) {
+    public void onFail(T response, int code) {
         String message = response.getMessage();
+        switch (code) {
+            case TOKEN_EXPIRED:
+
+                break;
+            case TOKEN_INCORRECT:
+                new RequestHelper(activity).signIn();
+                break;
+            default:
+                showToast(message);
+                break;
+        }
+    }
+
+    protected void showToast(String message) {
         if (TextUtils.isEmpty(message)) {
             ToastUtils.show(R.string.response_return_error);
         } else {
             ToastUtils.show(message);
         }
+
     }
 
     /**
