@@ -9,6 +9,7 @@ import com.cypoem.retrofit.activity.BaseActivity;
 import com.cypoem.retrofit.module.BasicResponse;
 import com.cypoem.retrofit.utils.CommonDialogUtils;
 import com.cypoem.retrofit.utils.LogUtils;
+import com.cypoem.retrofit.utils.SharedPreferencesHelper;
 import com.cypoem.retrofit.utils.ToastUtils;
 import com.google.gson.JsonParseException;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
@@ -129,14 +130,17 @@ public abstract class DefaultObserver<T extends BasicResponse> implements Observ
     public void onFail(T response, int code) {
         String message = response.getMessage();
         switch (code) {
-            case TOKEN_EXPIRED:
-            case TOKEN_INCORRECT:
+            case TOKEN_EXPIRED: //  token 过期刷新token
                 new RequestHelper((BaseActivity) activity, new RequestHelper.RequestCallback() {
                     @Override
                     public void onTokenUpdateSucceed() {
                         onTokenUpdateSuccess();
                     }
                 }).refreshToken();
+                break;
+            case TOKEN_INCORRECT:// token错误重新登录
+                SharedPreferencesHelper.put(activity,"isLogin",false);
+                ToastUtils.show("token错误，请重新登录，跳转到登录页面...");
                 break;
             default:
                 showToast(message);
