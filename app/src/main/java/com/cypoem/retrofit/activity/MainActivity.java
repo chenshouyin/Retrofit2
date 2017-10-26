@@ -2,7 +2,6 @@ package com.cypoem.retrofit.activity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 import com.cypoem.retrofit.R;
 import com.cypoem.retrofit.module.BasicResponse;

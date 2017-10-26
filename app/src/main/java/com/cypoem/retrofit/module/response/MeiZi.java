@@ -2,6 +2,8 @@ package com.cypoem.retrofit.module.response;
 
 /**
  * Created by zhpan on 2017/9/30.
+ * getMezi()接口中响应数据BasicResponse的泛型T应该是List<MeiZi>
+ * 即BasicResponse<List<MeiZi>>
  */
 
 public class MeiZi {

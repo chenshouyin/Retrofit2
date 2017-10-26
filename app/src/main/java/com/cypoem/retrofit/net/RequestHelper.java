@@ -20,7 +20,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class RequestHelper {
     private BaseActivity activity;
-    private int times;
+    private int times;  //  刷新token重连次数
     private RequestCallback callback;
 
     public RequestHelper(BaseActivity activity) {
@@ -39,18 +39,19 @@ public class RequestHelper {
         IdeaApi.getApiService()
                 .login(loginRequest)
                 .subscribeOn(Schedulers.io())
-                .compose(activity.<LoginResponse>bindToLifecycle())
+                .compose(activity.<BasicResponse<LoginResponse>>bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DefaultObserver<LoginResponse>(activity) {
+                .subscribe(new DefaultObserver<BasicResponse<LoginResponse>>(activity) {
                     @Override
-                    public void onSuccess(LoginResponse response) {
-                        ToastUtils.show("登录成功！获取到token"+response.getToken()+",可以存储到本地了");
+                    public void onSuccess(BasicResponse<LoginResponse> response) {
+                        LoginResponse results = response.getResults();
+                        ToastUtils.show("登录成功！获取到token" + results.getToken() + ",可以存储到本地了");
                         /**
                          * 可以将这些数据存储到User中，User存储到本地数据库
                          */
-                        SharedPreferencesHelper.put(activity,"token",response.getToken());
-                        SharedPreferencesHelper.put(activity,"refresh_token",response.getRefresh_token());
-                        SharedPreferencesHelper.put(activity,"refresh_secret",response.getRefresh_secret());
+                        SharedPreferencesHelper.put(activity, "token", results.getToken());
+                        SharedPreferencesHelper.put(activity, "refresh_token", results.getRefresh_token());
+                        SharedPreferencesHelper.put(activity, "refresh_secret", results.getRefresh_secret());
                     }
                 });
     }
@@ -65,6 +66,9 @@ public class RequestHelper {
                 .subscribe(new DefaultObserver<BasicResponse<RefreshTokenResponseBean>>(activity) {
                     @Override
                     public void onSuccess(BasicResponse<RefreshTokenResponseBean> response) {
+                        RefreshTokenResponseBean results = response.getResults();
+                        SharedPreferencesHelper.put(activity, "token", results.getToken());
+                        SharedPreferencesHelper.put(activity, "refresh_secret", results.getSecret());
                         if (null != callback) {
                             callback.onTokenUpdateSucceed();
                         }
@@ -74,8 +78,9 @@ public class RequestHelper {
                     public void onException(ExceptionReason reason) {
                         super.onException(reason);
                         if (times < 3) {
-                            login();
-                            ToastUtils.show("出错了..." + times);
+                            ToastUtils.show("刷新token出现异常，正在进行第" + times+"刷新");
+                        }else {
+                            ToastUtils.show("刷新token出现出错，正在跳转到登录页面..." + times);
                         }
                         times++;
                     }

@@ -1,13 +1,12 @@
 package com.cypoem.retrofit.module.response;
 
-import com.cypoem.retrofit.module.BasicResponse;
 
 /**
  * Created by zhpan on 2017/10/25.
  * Description:
  */
 
-public class LoginResponse extends BasicResponse {
+public class LoginResponse {
     private String token;
     private String refresh_token;
     private String expired;

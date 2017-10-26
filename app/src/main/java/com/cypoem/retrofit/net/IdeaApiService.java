@@ -28,6 +28,12 @@ public interface IdeaApiService {
     String HOST = "http://gank.io/";
     String API_SERVER_URL = HOST + "api/data/";
 
+
+    /**
+     * 此接口服务器响应数据BasicResponse的泛型T应该是List<MeiZi>
+     * 即BasicResponse<List<MeiZi>>
+     * @return BasicResponse<List<MeiZi>>
+     */
     @Headers("Cache-Control: public, max-age=100")//设置缓存 缓存时间为100s
     @GET("福利/10/1")
     Observable<BasicResponse<List<MeiZi>>> getMezi();
@@ -36,7 +42,7 @@ public interface IdeaApiService {
      * @return
      */
     @POST("login.do")
-    Observable<LoginResponse> login(@Body LoginRequest request);
+    Observable<BasicResponse<LoginResponse>> login(@Body LoginRequest request);
 
     /**
      * 刷新token 接口为假接口 并不能返回数据
