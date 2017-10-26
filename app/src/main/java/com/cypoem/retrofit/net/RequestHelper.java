@@ -46,6 +46,8 @@ public class RequestHelper {
                     public void onSuccess(LoginResponse response) {
                         ToastUtils.show("登录成功！获取到token"+response.getToken()+",可以存储到本地了");
                         SharedPreferencesHelper.put(activity,"token",response.getToken());
+                        SharedPreferencesHelper.put(activity,"refresh_token",response.getRefresh_token());
+                        SharedPreferencesHelper.put(activity,"refresh_secret",response.getRefresh_secret());
                     }
                 });
     }

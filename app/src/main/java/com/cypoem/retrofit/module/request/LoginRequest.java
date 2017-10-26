@@ -8,7 +8,7 @@ import com.cypoem.retrofit.utils.KeyTools;
 
 /**
  * Created by zhpan on 2017/10/25.
- * Description:
+ * Description:登录请求实体类
  */
 
 public class LoginRequest extends BasicRequest {
@@ -52,7 +52,7 @@ public class LoginRequest extends BasicRequest {
      */
     public static String generateAppKey(Context context) {
         String deviceId = ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
-        //String timeStamp = System.currentTimeMillis() + "";
-        return KeyTools.getMD5(deviceId);
+        String timeStamp = System.currentTimeMillis() + "";
+        return KeyTools.getMD5(deviceId+timeStamp);
     }
 }

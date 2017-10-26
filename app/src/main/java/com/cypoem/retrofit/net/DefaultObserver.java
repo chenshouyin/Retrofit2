@@ -48,9 +48,13 @@ public abstract class DefaultObserver<T extends BasicResponse> implements Observ
      */
     public final static int TOKEN_EXPIRED = 202;
 
+    /**
+     * refresh_token过期
+     */
+    public final static int REFRESH_TOKEN_EXPIRED=203;
+
     private Activity activity;
-    //  Activity 是否在执行onStop()时取消订阅
-    private boolean isAddInStop = false;
+
     private CommonDialogUtils dialogUtils;
 
     public DefaultObserver(Activity activity) {
@@ -81,7 +85,7 @@ public abstract class DefaultObserver<T extends BasicResponse> implements Observ
         /*if (response.getCode() == REQUEST_SUCCESS) {
             onSuccess(response);
         } else {
-            onFail(response);
+            onFail(response, response.getCode());
         }*/
     }
 
@@ -138,6 +142,7 @@ public abstract class DefaultObserver<T extends BasicResponse> implements Observ
                     }
                 }).refreshToken();
                 break;
+            case REFRESH_TOKEN_EXPIRED:
             case TOKEN_INCORRECT:// token错误重新登录
                 SharedPreferencesHelper.put(activity,"isLogin",false);
                 ToastUtils.show("token错误，请重新登录，跳转到登录页面...");
