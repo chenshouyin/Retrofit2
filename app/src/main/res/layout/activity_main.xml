@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -16,12 +15,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="login"
-        android:text="登录"/>
+        android:text="登录" />
 
     <Button
         android:id="@+id/btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/login"
-        android:text="点击获取网络数据"/>
+        android:onClick="getData"
+        android:text="点击获取网络数据" />
 </RelativeLayout>

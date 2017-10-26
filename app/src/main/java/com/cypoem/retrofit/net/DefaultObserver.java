@@ -51,7 +51,7 @@ public abstract class DefaultObserver<T extends BasicResponse> implements Observ
     /**
      * refresh_token过期
      */
-    public final static int REFRESH_TOKEN_EXPIRED=203;
+    public final static int REFRESH_TOKEN_EXPIRED = 203;
 
     private Activity activity;
 
@@ -134,17 +134,12 @@ public abstract class DefaultObserver<T extends BasicResponse> implements Observ
     public void onFail(T response, int code) {
         String message = response.getMessage();
         switch (code) {
-            case TOKEN_EXPIRED: //  token 过期刷新token
-                new RequestHelper((BaseActivity) activity, new RequestHelper.RequestCallback() {
-                    @Override
-                    public void onTokenUpdateSucceed() {
-                        onTokenUpdateSuccess();
-                    }
-                }).refreshToken();
+            case TOKEN_EXPIRED: //  token过期 刷新token
+                refreshToken();
                 break;
-            case REFRESH_TOKEN_EXPIRED:
+            case REFRESH_TOKEN_EXPIRED:// refresh_token过期
             case TOKEN_INCORRECT:// token错误重新登录
-                SharedPreferencesHelper.put(activity,"isLogin",false);
+                SharedPreferencesHelper.put(activity, "isLogin", false);
                 ToastUtils.show("token错误，请重新登录，跳转到登录页面...");
                 break;
             default:
@@ -153,7 +148,17 @@ public abstract class DefaultObserver<T extends BasicResponse> implements Observ
         }
     }
 
-    public void onTokenUpdateSuccess(){}
+    private void refreshToken() {
+        new RequestHelper((BaseActivity) activity, new RequestHelper.RequestCallback() {
+            @Override
+            public void onTokenUpdateSucceed() {
+                onTokenUpdateSuccess();
+            }
+        }).refreshToken();
+    }
+
+    public void onTokenUpdateSuccess() {
+    }
 
     protected void showToast(String message) {
         if (TextUtils.isEmpty(message)) {

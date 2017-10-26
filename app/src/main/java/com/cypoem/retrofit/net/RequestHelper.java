@@ -15,7 +15,7 @@ import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by zhpan on 2017/10/12.
- * Description:
+ * Description:登录和刷新token的请求
  */
 
 public class RequestHelper {
@@ -45,6 +45,9 @@ public class RequestHelper {
                     @Override
                     public void onSuccess(LoginResponse response) {
                         ToastUtils.show("登录成功！获取到token"+response.getToken()+",可以存储到本地了");
+                        /**
+                         * 可以将这些数据存储到User中，User存储到本地数据库
+                         */
                         SharedPreferencesHelper.put(activity,"token",response.getToken());
                         SharedPreferencesHelper.put(activity,"refresh_token",response.getRefresh_token());
                         SharedPreferencesHelper.put(activity,"refresh_secret",response.getRefresh_secret());

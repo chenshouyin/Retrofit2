@@ -17,7 +17,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends BaseActivity {
-    private Button btn;
 
     @Override
     protected int getLayoutId() {
@@ -26,24 +25,15 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void init(Bundle savedInstanceState) {
-        initView();
+
     }
 
-    private void initView() {
-        btn = (Button) findViewById(R.id.btn);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getData();
-            }
-        });
-    }
     //  登录 成功后保存token
     public void login(View view) {
         new RequestHelper(this).login();
     }
 
-    public void getData() {
+    public void getData(View view) {
         IdeaApi.getApiService()
                 .getMezi()
                 .compose(this.<BasicResponse<List<MeiZi>>>bindToLifecycle())
@@ -62,7 +52,7 @@ public class MainActivity extends BaseActivity {
                     @Override
                     public void onTokenUpdateSuccess() {
                         super.onTokenUpdateSuccess();
-                        getData();
+                        getData(null);
                     }
                 });
     }
