@@ -38,7 +38,8 @@ public interface IdeaApiService {
     @GET("福利/10/1")
     Observable<BasicResponse<List<MeiZi>>> getMezi();
 
-    /**登录 接口为假接口 并不能返回数据
+    /**
+     * 登录 接口为假接口 并不能返回数据
      * @return
      */
     @POST("login.do")

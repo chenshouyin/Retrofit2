@@ -78,8 +78,8 @@ public class RequestHelper {
                     public void onException(ExceptionReason reason) {
                         super.onException(reason);
                         if (times < 3) {
-                            ToastUtils.show("刷新token出现异常，正在进行第" + times+"刷新");
-                        }else {
+                            ToastUtils.show("刷新token出现异常，正在进行第" + times+1 + "次刷新");
+                        } else {
                             ToastUtils.show("刷新token出现出错，正在跳转到登录页面..." + times);
                         }
                         times++;
