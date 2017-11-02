@@ -74,7 +74,8 @@ public class RequestHelper {
                         }
                     }
 
-                    @Override
+                   /* 这样写有问题呀...times永远都是0 哈哈..
+                   @Override
                     public void onException(ExceptionReason reason) {
                         super.onException(reason);
                         if (times < 3) {
@@ -83,7 +84,7 @@ public class RequestHelper {
                             ToastUtils.show("刷新token出现出错，正在跳转到登录页面..." + times);
                         }
                         times++;
-                    }
+                    }*/
                 });
     }
 
