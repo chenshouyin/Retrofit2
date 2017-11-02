@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.cypoem.retrofit.utils.LogUtils;
 import com.cypoem.retrofit.utils.NetworkUtils;
+import com.cypoem.retrofit.utils.SharedPreferencesHelper;
 import com.cypoem.retrofit.utils.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -95,8 +96,14 @@ public class IdeaApi {
             if (NetworkUtils.isConnected()) {
                 //有网的时候读接口上的@Headers里的配置，你可以在这里进行统一的设置
                 String cacheControl = request.cacheControl().toString();
+                //  将token统一放到请求头
+                String token= (String) SharedPreferencesHelper.get(Utils.getContext(),"token","");
+                //  也可以统一配置用户名
+                String username="123456";
                 return originalResponse.newBuilder()
                         .header("Cache-Control", cacheControl)
+                        .addHeader("token",token)
+                        .addHeader("username",username)
                         .removeHeader("Pragma")
                         .build();
             } else {

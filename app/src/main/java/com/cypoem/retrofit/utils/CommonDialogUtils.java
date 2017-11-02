@@ -18,12 +18,12 @@ public class CommonDialogUtils {
     /**
      * 显示ProgressDialog
      */
-    public void showProgress(Context context, String msg) {
-       /* if (context == null || context.isFinishing()) {
+    public void showProgress(Activity activity, String msg) {
+        if (activity == null || activity.isFinishing()) {
             return;
-        }*/
+        }
         if(mProgressDialog==null){
-            mProgressDialog= new CustomProgressDialog.Builder(context)
+            mProgressDialog= new CustomProgressDialog.Builder(activity)
                     .setTheme(R.style.ProgressDialogStyle)
                     .setMessage(msg)
                     .build();
@@ -36,12 +36,12 @@ public class CommonDialogUtils {
     /**
      * 显示ProgressDialog
      */
-    public void showProgress(Context context) {
-        /*if (activity == null || activity.isFinishing()) {
+    public void showProgress(Activity activity) {
+        if (activity == null || activity.isFinishing()) {
             return;
-        }*/
+        }
         if(mProgressDialog==null){
-            mProgressDialog= new CustomProgressDialog.Builder(context)
+            mProgressDialog= new CustomProgressDialog.Builder(activity)
                     .setTheme(R.style.ProgressDialogStyle)
                     .build();
         }
