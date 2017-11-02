@@ -36,7 +36,8 @@ public class IdeaApi {
        /* HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);*/
 
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
             @Override
             public void log(String message) {
                 try {
@@ -48,16 +49,18 @@ public class IdeaApi {
                 }
             }
         });
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         File cacheFile = new File(Utils.getContext().getCacheDir(), "cache");
         Cache cache = new Cache(cacheFile, 1024 * 1024 * 100); //100Mb
+
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .readTimeout(IdeaApiService.DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS)
                 .connectTimeout(IdeaApiService.DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS)
-                .addInterceptor(interceptor)
-                .addNetworkInterceptor(new HttpCacheInterceptor())
                 .cache(cache)
+                .addInterceptor(loggingInterceptor)
+                .addInterceptor(new HttpHeaderInterceptor())
+                .addNetworkInterceptor(new HttpCacheInterceptor())
                 .build();
 
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").serializeNulls().create();
@@ -79,7 +82,25 @@ public class IdeaApi {
         return SingletonHolder.INSTANCE.service;
     }
 
-    class HttpCacheInterceptor implements Interceptor {
+    //  添加请求头的拦截器
+    private class HttpHeaderInterceptor implements Interceptor{
+
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            //  将token统一放到请求头
+            String token= (String) SharedPreferencesHelper.get(Utils.getContext(),"token","");
+            //  也可以统一配置用户名
+            String user_id="123456";
+            Response originalResponse = chain.proceed(chain.request());
+            return originalResponse.newBuilder()
+                    .header("token", token)
+                    .header("user_id", user_id)
+                    .build();
+        }
+    }
+
+    //  配置缓存的拦截器
+    private class HttpCacheInterceptor implements Interceptor {
 
         @Override
         public Response intercept(Chain chain) throws IOException {
@@ -91,19 +112,13 @@ public class IdeaApi {
                 LogUtils.d("Okhttp", "no network");
             }
 
-
             Response originalResponse = chain.proceed(request);
             if (NetworkUtils.isConnected()) {
                 //有网的时候读接口上的@Headers里的配置，你可以在这里进行统一的设置
                 String cacheControl = request.cacheControl().toString();
-                //  将token统一放到请求头
-                String token= (String) SharedPreferencesHelper.get(Utils.getContext(),"token","");
-                //  也可以统一配置用户名
-                String username="123456";
+
                 return originalResponse.newBuilder()
                         .header("Cache-Control", cacheControl)
-                        .addHeader("token",token)
-                        .addHeader("username",username)
                         .removeHeader("Pragma")
                         .build();
             } else {
