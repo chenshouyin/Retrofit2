@@ -74,29 +74,30 @@ public class IdeaApi {
         service = retrofit.create(IdeaApiService.class);
     }
 
+    //  添加请求头的拦截器
+    private class HttpHeaderInterceptor implements Interceptor {
+
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            //  配置请求头
+            String accessToken = "token";
+            String tokenType = "tokenType";
+            Request request = chain.request().newBuilder()
+                    .header("app_key","appId")
+                    .header("Authorization", tokenType + " " + accessToken)
+                    .header("Content-Type", "application/json")
+                    .addHeader("Connection", "close")
+                    .build();
+            return chain.proceed(request);
+        }
+    }
+
     //  创建单例
     private static class SingletonHolder {
         private static final IdeaApi INSTANCE = new IdeaApi();
     }
     public static IdeaApiService getApiService() {
         return SingletonHolder.INSTANCE.service;
-    }
-
-    //  添加请求头的拦截器
-    private class HttpHeaderInterceptor implements Interceptor{
-
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            //  将token统一放到请求头
-            String token= (String) SharedPreferencesHelper.get(Utils.getContext(),"token","");
-            //  也可以统一配置用户名
-            String user_id="123456";
-            Response originalResponse = chain.proceed(chain.request());
-            return originalResponse.newBuilder()
-                    .header("token", token)
-                    .header("user_id", user_id)
-                    .build();
-        }
     }
 
     //  配置缓存的拦截器
