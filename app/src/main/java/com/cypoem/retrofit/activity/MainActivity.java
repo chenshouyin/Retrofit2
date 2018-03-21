@@ -5,15 +5,21 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.cypoem.retrofit.R;
 import com.cypoem.retrofit.module.BasicResponse;
 import com.cypoem.retrofit.module.response.MeiZi;
 import com.cypoem.retrofit.net.DefaultObserver;
-import com.cypoem.retrofit.net.DownloadObserver;
+import com.cypoem.retrofit.net.download.DownListener;
 import com.cypoem.retrofit.net.IdeaApi;
 import com.cypoem.retrofit.net.RequestHelper;
+import com.cypoem.retrofit.net.download.DownloadUtils;
+import com.cypoem.retrofit.utils.FileUtils;
+import com.cypoem.retrofit.utils.LogUtils;
 import com.cypoem.retrofit.utils.ToastUtils;
 
 
@@ -25,13 +31,13 @@ import java.io.InputStream;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
 public class MainActivity extends BaseActivity {
-
-    private File mFile;
+    ProgressBar progressBar;
+    TextView mTvPercent;
+    private static final String url="http://www.oitsme.com/download/oitsme.apk";
 
     @Override
     protected int getLayoutId() {
@@ -40,7 +46,9 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void init(Bundle savedInstanceState) {
-
+        progressBar= (ProgressBar) findViewById(R.id.progressBar);
+        mTvPercent=(TextView)findViewById(R.id.tv_percent);
+        progressBar.setMax(100);
     }
 
     //  登录 成功后保存token
@@ -72,36 +80,43 @@ public class MainActivity extends BaseActivity {
                 });
     }
 
-
-    public void download(View view){
-        IdeaApi.getApiService()
-                .download("http://www.oitsme.com/download/oitsme.apk")
-                .compose(this.<ResponseBody>bindToLifecycle())
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .doOnNext(new Consumer<ResponseBody>() {
+    public void download(View view) {
+        new DownloadUtils(this)
+                .download(url, new DownListener() {
                     @Override
-                    public void accept(ResponseBody responseBody) throws Exception {
-                        saveFile(responseBody);
+                    public void onProgress(int progress) {
+                        LogUtils.e("--------下载进度：" + progress);
+                        Log.e("onProgress", "是否在主线程中运行:"+String.valueOf(Looper.getMainLooper() == Looper.myLooper()));
+                        progressBar.setProgress(progress);
+                        mTvPercent.setText(String.valueOf(progress)+"%");
                     }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DownloadObserver<ResponseBody>() {
+
                     @Override
-                    public void onSuccess(ResponseBody responseBody) {
+                    public void onSuccess(ResponseBody responseBody) {  //  运行在子线程
+                        saveFile(responseBody);
+                        Log.e("onSuccess", "是否在主线程中运行:"+String.valueOf(Looper.getMainLooper() == Looper.myLooper()));
+                    }
+
+                    @Override
+                    public void onFail(String message) {
+                        ToastUtils.show("文件下载失败,失败原因："+message);
+                        Log.e("onFail", "是否在主线程中运行:"+String.valueOf(Looper.getMainLooper() == Looper.myLooper()));
+                    }
+
+                    @Override
+                    public void onComplete() {  //  运行在主线程中
                         ToastUtils.show("文件下载成功");
                     }
                 });
-
     }
 
     private void saveFile(ResponseBody body) {
-        String fileName = "app.apk";
+        String fileName = "oitsme.apk";
         String fileStoreDir = Environment.getExternalStorageDirectory().getAbsolutePath();
         try {
             InputStream is = body.byteStream();
-            mFile = new File(fileStoreDir +"/"+ fileName);
-            FileOutputStream fos = new FileOutputStream(mFile);
+            File file = new File(fileStoreDir + "/" + fileName);
+            FileOutputStream fos = new FileOutputStream(file);
             BufferedInputStream bis = new BufferedInputStream(is);
             byte[] buffer = new byte[1024];
             int len;
@@ -109,25 +124,24 @@ public class MainActivity extends BaseActivity {
                 fos.write(buffer, 0, len);
                 fos.flush();
             }
-            //ToastUtils.show("文件已保存");
             fos.close();
             bis.close();
             is.close();
-            installApk();
-
+            installApk(file);
         } catch (IOException e) {
             e.printStackTrace();
-            ToastUtils.show("文件保存失败");
         }
     }
 
-    private void installApk() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(mFile),
-                "application/vnd.android.package-archive");
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+    private void installApk(File file) {
+        if(FileUtils.getFileMD5ToString(file).equals("0C9C22BD30CC233A0B814E4459D5E0F2")){
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(Uri.fromFile(file),
+                    "application/vnd.android.package-archive");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }else {
+            LogUtils.e("文件下载有误");
+        }
     }
-
-
 }

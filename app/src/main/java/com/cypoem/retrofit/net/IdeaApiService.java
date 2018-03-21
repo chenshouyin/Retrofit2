@@ -24,15 +24,6 @@ import retrofit2.http.Url;
 
 public interface IdeaApiService {
     /**
-     * 网络请求超时时间毫秒
-     */
-    int DEFAULT_TIMEOUT = 20000;
-
-    String HOST = "http://gank.io/";
-    String API_SERVER_URL = HOST + "api/data/";
-
-
-    /**
      * 此接口服务器响应数据BasicResponse的泛型T应该是List<MeiZi>
      * 即BasicResponse<List<MeiZi>>
      * @return BasicResponse<List<MeiZi>>

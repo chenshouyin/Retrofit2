@@ -1,4 +1,4 @@
-package com.cypoem.retrofit.net;
+package com.cypoem.retrofit.net.download;
 
 import com.cypoem.retrofit.utils.ToastUtils;
 
@@ -22,22 +22,11 @@ public abstract   class DownloadObserver<T> implements Observer<T> {
 
     @Override
     public void onError(Throwable e) {
-        onFail(e);
     }
 
     @Override
     public void onComplete() {
-        onFinish();
     }
 
     abstract public void onSuccess(T t);
-
-     public void onFail(Throwable e){
-         ToastUtils.show(e.getMessage());
-     }
-
-     public void onFinish(){
-
-     }
-
 }
