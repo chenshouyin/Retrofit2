@@ -55,14 +55,14 @@ public class CommonNetService {
         return okHttpClient;
     }
 
-    public static Retrofit.Builder getRetrofitBuilder() {
+    public static Retrofit.Builder getRetrofitBuilder(String baseUrl) {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").serializeNulls().create();
         OkHttpClient okHttpClient = CommonNetService.getOkHttpClientBuilder().build();
         Retrofit.Builder builder = new Retrofit.Builder()
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl(Constants.API_SERVER_URL);
+                .baseUrl(baseUrl);
         return builder;
     }
 }
