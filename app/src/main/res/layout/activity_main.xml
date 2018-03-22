@@ -12,7 +12,14 @@
     tools:context="com.cypoem.retrofit.activity.MainActivity">
 
     <Button
-        android:id="@+id/btn_request"
+        android:id="@+id/login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="login"
+        android:text="登录" />
+
+    <Button
+        android:id="@+id/btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
