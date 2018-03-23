@@ -7,7 +7,6 @@ import android.widget.Toast;
 import com.cypoem.retrofit.R;
 import com.cypoem.retrofit.activity.BaseActivity;
 import com.cypoem.retrofit.module.BasicResponse;
-import com.cypoem.retrofit.utils.CommonDialogUtils;
 import com.cypoem.retrofit.utils.LogUtils;
 import com.cypoem.retrofit.utils.SharedPreferencesHelper;
 import com.cypoem.retrofit.utils.ToastUtils;
@@ -55,18 +54,13 @@ public abstract class DefaultObserver<T extends BasicResponse> implements Observ
 
     private Activity activity;
 
-    private CommonDialogUtils dialogUtils;
 
     public DefaultObserver(Activity activity) {
         this.activity = activity;
-        dialogUtils = new CommonDialogUtils();
-        dialogUtils.showProgress(activity);
     }
 
     public DefaultObserver(Activity activity, String message) {
         this.activity = activity;
-        dialogUtils = new CommonDialogUtils();
-        dialogUtils.showProgress(activity, message);
     }
 
     @Override
@@ -76,7 +70,6 @@ public abstract class DefaultObserver<T extends BasicResponse> implements Observ
 
     @Override
     public void onNext(T response) {
-        dismissProgress();
         if (!response.isError()) {
             onSuccess(response);
         } else {
@@ -89,16 +82,10 @@ public abstract class DefaultObserver<T extends BasicResponse> implements Observ
         }*/
     }
 
-    private void dismissProgress() {
-        if (dialogUtils != null) {
-            dialogUtils.dismissProgress();
-        }
-    }
 
     @Override
     public void onError(Throwable e) {
         LogUtils.e("Retrofit", e.getMessage());
-        dismissProgress();
         if (e instanceof HttpException) {     //   HTTP错误
             onException(ExceptionReason.BAD_NETWORK);
         } else if (e instanceof ConnectException

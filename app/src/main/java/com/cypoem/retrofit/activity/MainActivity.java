@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.cypoem.retrofit.ProgressUtils;
 import com.cypoem.retrofit.R;
 import com.cypoem.retrofit.module.BasicResponse;
 import com.cypoem.retrofit.module.response.MeiZi;
@@ -63,6 +64,7 @@ public class MainActivity extends BaseActivity {
         IdeaApi.getApiService()
                 .getMezi()
                 .compose(this.<BasicResponse<List<MeiZi>>>bindToLifecycle())
+                .compose(ProgressUtils.<BasicResponse<List<MeiZi>>>applyProgressBar(this))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DefaultObserver<BasicResponse<List<MeiZi>>>(this, "正在加载...") {
