@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.cypoem.retrofit.ProgressUtils;
 import com.cypoem.retrofit.R;
 import com.cypoem.retrofit.module.response.MeiZi;
 import com.cypoem.retrofit.net.ProgressUtils;
