@@ -15,6 +15,7 @@ public class RetrofitHelper {
         return mIdeaApiService;
     }
     static {
-        mIdeaApiService = IdeaApi.getApiService(IdeaApiService.class, Constants.API_SERVER_URL);
+        IdeaApi ideaApi=new IdeaApi();
+        mIdeaApiService = ideaApi.getApiService(IdeaApiService.class, Constants.API_SERVER_URL);
     }
 }

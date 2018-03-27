@@ -8,8 +8,9 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import lotcom.zhpan.idea.net.common.CommonNetService;
 import lotcom.zhpan.idea.net.common.Constants;
+import lotcom.zhpan.idea.net.common.CommonService;
+import lotcom.zhpan.idea.net.common.RetrofitService;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 
@@ -48,20 +49,20 @@ public class DownloadUtils {
         mDisposables.clear();
     }
 
-    private DownloadService getApiService() {
-        OkHttpClient.Builder httpClientBuilder = CommonNetService.getOkHttpClientBuilder();
+    private CommonService getApiService() {
+        OkHttpClient.Builder httpClientBuilder = RetrofitService.getOkHttpClientBuilder();
         ProgressHelper.addProgress(httpClientBuilder);
-        DownloadService downloadService = CommonNetService.getRetrofitBuilder(Constants.API_SERVER_URL)
+        CommonService commonService = RetrofitService.getRetrofitBuilder(Constants.API_SERVER_URL)
                 .client(httpClientBuilder.build())
                 .build()
-                .create(DownloadService.class);
+                .create(CommonService.class);
         ProgressHelper.setProgressHandler(new DownloadProgressHandler() {
             @Override
             protected void onProgress(long bytesRead, long contentLength, boolean done) {
                 mDownloadListener.onProgress((int) ((100 * bytesRead) / contentLength));
             }
         });
-        return downloadService;
+        return commonService;
     }
 
 

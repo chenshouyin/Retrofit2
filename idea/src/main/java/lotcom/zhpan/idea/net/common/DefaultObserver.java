@@ -18,6 +18,9 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import lotcom.zhpan.idea.R;
 import lotcom.zhpan.idea.net.BasicResponse;
+import lotcom.zhpan.idea.net.exception.ServerResponseException;
+import lotcom.zhpan.idea.net.exception.TokenInvalidException;
+import lotcom.zhpan.idea.net.exception.TokenNotExistException;
 import lotcom.zhpan.idea.utils.ToastUtils;
 
 import static lotcom.zhpan.idea.net.common.DefaultObserver.ExceptionReason.CONNECT_ERROR;
@@ -30,24 +33,8 @@ import static lotcom.zhpan.idea.net.common.DefaultObserver.ExceptionReason.UNKNO
  * Created by zhpan on 2017/4/18.
  */
 
-public abstract class DefaultObserver<T extends BasicResponse> implements Observer<T> {
-    /**
-     * 请求成功
-     */
-    public final static int REQUEST_SUCCESS = 200;
-    /**
-     * token错误
-     */
-    public final static int TOKEN_INCORRECT = 201;
-    /**
-     * token过期
-     */
-    public final static int TOKEN_EXPIRED = 202;
+public abstract class DefaultObserver<T> implements Observer<T> {
 
-    /**
-     * refresh_token过期
-     */
-    public final static int REFRESH_TOKEN_EXPIRED = 203;
 
 
 
@@ -61,25 +48,12 @@ public abstract class DefaultObserver<T extends BasicResponse> implements Observ
 
     @Override
     public void onNext(T response) {
-        dismissProgress();
-        if (!response.isError()) {
-            onSuccess(response);
-        } else {
-            onFail(response, response.getCode());
-        }
-        /*if (response.getCode() == REQUEST_SUCCESS) {
-            onSuccess(response);
-        } else {
-            onFail(response, response.getCode());
-        }*/
+        onSuccess(response);
     }
 
-    private void dismissProgress() {
-    }
 
     @Override
     public void onError(Throwable e) {
-        dismissProgress();
         if (e instanceof HttpException) {     //   HTTP错误
             onException(ExceptionReason.BAD_NETWORK);
         } else if (e instanceof ConnectException
@@ -91,6 +65,11 @@ public abstract class DefaultObserver<T extends BasicResponse> implements Observ
                 || e instanceof JSONException
                 || e instanceof ParseException) {   //  解析错误
             onException(PARSE_ERROR);
+        }else if (e instanceof TokenInvalidException
+                ||e instanceof TokenNotExistException){ //  token异常
+
+        }else if(e instanceof ServerResponseException){
+            onFail(e.getMessage());
         } else {
             onException(UNKNOWN_ERROR);
         }
@@ -112,21 +91,11 @@ public abstract class DefaultObserver<T extends BasicResponse> implements Observ
      *
      * @param response 服务器返回的数据
      */
-    public void onFail(T response, int code) {
-        String message = response.getMessage();
-        switch (code) {
-            case TOKEN_EXPIRED: //  token过期 刷新token
-                //refreshToken();
-                break;
-            case REFRESH_TOKEN_EXPIRED:// refresh_token过期
-            case TOKEN_INCORRECT:// token错误重新登录
-               /* SharedPreferencesHelper.put(activity, "isLogin", false);
-                ToastUtils.show("token错误，请重新登录，跳转到登录页面...");*/
-                break;
-            default:
-                showToast(message);
-                break;
-        }
+    /**
+     * 服务器返回数据，但响应码不为1000
+     */
+    public void onFail(String message) {
+        ToastUtils.show(message);
     }
 
    /* private void refreshToken() {

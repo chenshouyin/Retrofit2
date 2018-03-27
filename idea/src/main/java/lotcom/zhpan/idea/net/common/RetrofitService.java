@@ -9,6 +9,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.concurrent.TimeUnit;
 
+import lotcom.zhpan.idea.net.converter.GsonConverterFactory;
 import lotcom.zhpan.idea.net.interceptor.HttpCacheInterceptor;
 import lotcom.zhpan.idea.net.interceptor.HttpHeaderInterceptor;
 import lotcom.zhpan.idea.utils.LogUtils;
@@ -17,7 +18,6 @@ import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by zhpan on 2018/3/21.
