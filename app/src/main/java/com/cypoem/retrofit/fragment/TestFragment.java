@@ -3,16 +3,16 @@ package com.cypoem.retrofit.fragment;
 import android.os.Bundle;
 
 import com.cypoem.retrofit.R;
-import com.cypoem.retrofit.activity.BaseActivity;
-import com.cypoem.retrofit.module.BasicResponse;
 import com.cypoem.retrofit.module.response.MeiZi;
-import com.cypoem.retrofit.net.DefaultObserver;
-import com.cypoem.retrofit.net.IdeaApi;
+import com.cypoem.retrofit.net.ProgressUtils;
+import com.cypoem.retrofit.net.RetrofitHelper;
 
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import lotcom.zhpan.idea.net.BasicResponse;
+import lotcom.zhpan.idea.net.common.DefaultObserver;
 
 /**
  * Created by zhpan on 2017/9/30.
@@ -33,12 +33,13 @@ public class TestFragment extends BaseFragment {
 
     public void getData() {
 
-        IdeaApi.getApiService()
+        RetrofitHelper.getApiService()
                 .getMezi()
                 .compose(this.<BasicResponse<List<MeiZi>>>bindToLifecycle())
+                .compose(ProgressUtils.<BasicResponse<List<MeiZi>>>applyProgressBar(getActivity()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DefaultObserver<BasicResponse<List<MeiZi>>>(getActivity()) {
+                .subscribe(new DefaultObserver<BasicResponse<List<MeiZi>>>() {
                     @Override
                     public void onSuccess(BasicResponse<List<MeiZi>> response) {
                         List<MeiZi> results = response.getResults();

@@ -4,7 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.telephony.TelephonyManager;
 
-import com.cypoem.retrofit.utils.KeyTools;
+import lotcom.zhpan.idea.utils.KeyTools;
+
 
 /**
  * Created by zhpan on 2017/10/25.

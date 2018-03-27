@@ -1,6 +1,5 @@
 package com.cypoem.retrofit.net;
 
-import com.cypoem.retrofit.module.BasicResponse;
 import com.cypoem.retrofit.module.request.LoginRequest;
 import com.cypoem.retrofit.module.request.RefreshTokenRequest;
 import com.cypoem.retrofit.module.response.LoginResponse;
@@ -10,11 +9,15 @@ import com.cypoem.retrofit.module.response.RefreshTokenResponseBean;
 import java.util.List;
 
 import io.reactivex.Observable;
+import lotcom.zhpan.idea.net.BasicResponse;
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 
@@ -46,7 +49,7 @@ public interface IdeaApiService {
     @POST("refresh_token.do")
     Observable<BasicResponse<RefreshTokenResponseBean>> refreshToken(@Body RefreshTokenRequest request);
 
-    @Streaming
-    @GET//("download.do")
-    Observable<ResponseBody> download(@Url String url);//直接使用网址下载
+    @Multipart
+    @POST("upload/uploadFile.do")
+    Observable<BasicResponse> uploadFiles(@Part List<MultipartBody.Part> partList);
 }

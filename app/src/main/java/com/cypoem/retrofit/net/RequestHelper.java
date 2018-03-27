@@ -1,17 +1,19 @@
 package com.cypoem.retrofit.net;
 
 
-import com.cypoem.retrofit.activity.BaseActivity;
-import com.cypoem.retrofit.module.BasicResponse;
 import com.cypoem.retrofit.module.request.LoginRequest;
 import com.cypoem.retrofit.module.request.RefreshTokenRequest;
 import com.cypoem.retrofit.module.response.LoginResponse;
 import com.cypoem.retrofit.module.response.RefreshTokenResponseBean;
-import com.cypoem.retrofit.utils.SharedPreferencesHelper;
-import com.cypoem.retrofit.utils.ToastUtils;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import lotcom.zhpan.idea.BaseActivity;
+import lotcom.zhpan.idea.net.BasicResponse;
+import lotcom.zhpan.idea.net.common.DefaultObserver;
+import lotcom.zhpan.idea.net.common.IdeaApi;
+import lotcom.zhpan.idea.utils.SharedPreferencesHelper;
+import lotcom.zhpan.idea.utils.ToastUtils;
 
 /**
  * Created by zhpan on 2017/10/12.
@@ -36,12 +38,12 @@ public class RequestHelper {
         LoginRequest loginRequest = new LoginRequest(activity);
         loginRequest.setUserId("123456");
         loginRequest.setPassword("123123");
-        IdeaApi.getApiService()
+        RetrofitHelper.getApiService()
                 .login(loginRequest)
                 .subscribeOn(Schedulers.io())
                 .compose(activity.<BasicResponse<LoginResponse>>bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DefaultObserver<BasicResponse<LoginResponse>>(activity) {
+                .subscribe(new DefaultObserver<BasicResponse<LoginResponse>>() {
                     @Override
                     public void onSuccess(BasicResponse<LoginResponse> response) {
                         LoginResponse results = response.getResults();
@@ -58,12 +60,12 @@ public class RequestHelper {
 
     //  刷新token
     public void refreshToken() {
-        IdeaApi.getApiService()
+        RetrofitHelper.getApiService()
                 .refreshToken(new RefreshTokenRequest())
                 .subscribeOn(Schedulers.io())
                 .compose(activity.<BasicResponse<RefreshTokenResponseBean>>bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DefaultObserver<BasicResponse<RefreshTokenResponseBean>>(activity) {
+                .subscribe(new DefaultObserver<BasicResponse<RefreshTokenResponseBean>>() {
                     @Override
                     public void onSuccess(BasicResponse<RefreshTokenResponseBean> response) {
                         RefreshTokenResponseBean results = response.getResults();

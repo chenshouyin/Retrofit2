@@ -1,7 +1,8 @@
 package com.cypoem.retrofit.module.request;
 
-import com.cypoem.retrofit.utils.SharedPreferencesHelper;
-import com.cypoem.retrofit.utils.Utils;
+
+import lotcom.zhpan.idea.utils.SharedPreferencesHelper;
+import lotcom.zhpan.idea.utils.Utils;
 
 /**
  * Created by zhpan on 2017/10/25.
