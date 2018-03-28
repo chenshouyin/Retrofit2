@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package lotcom.zhpan.idea.net;
+package lotcom.zhpan.idea.net.token;
 
 /**
  * Created by david on 16/8/21.

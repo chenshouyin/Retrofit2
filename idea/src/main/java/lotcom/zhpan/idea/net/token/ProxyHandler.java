@@ -1,5 +1,5 @@
 
-package lotcom.zhpan.idea.net.proxy;
+package lotcom.zhpan.idea.net.token;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -13,9 +13,6 @@ import java.util.Date;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
-import lotcom.zhpan.idea.net.GlobalToken;
-import lotcom.zhpan.idea.net.IGlobalManager;
-import lotcom.zhpan.idea.net.TokenResponse;
 import lotcom.zhpan.idea.net.common.Constants;
 import lotcom.zhpan.idea.net.common.DefaultObserver;
 import lotcom.zhpan.idea.net.common.CommonService;
@@ -114,7 +111,7 @@ public class ProxyHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, final Method method, final Object[] args) throws Throwable {
-        return Observable.just(proxy).flatMap(new Function<Object, ObservableSource<?>>() {
+        return Observable.just(true).flatMap(new Function<Object, ObservableSource<?>>() {
             @Override
             public ObservableSource<?> apply(Object o) throws Exception {
                 try {

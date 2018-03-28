@@ -20,7 +20,7 @@ import com.google.gson.TypeAdapter;
 
 import java.io.IOException;
 
-import lotcom.zhpan.idea.net.BasicResponse;
+import lotcom.zhpan.idea.net.common.BasicResponse;
 import lotcom.zhpan.idea.net.common.ErrorCode;
 import lotcom.zhpan.idea.net.exception.ServerResponseException;
 import lotcom.zhpan.idea.net.exception.TokenInvalidException;

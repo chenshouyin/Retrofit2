@@ -2,7 +2,7 @@ package lotcom.zhpan.idea.net.common;
 
 
 import io.reactivex.Observable;
-import lotcom.zhpan.idea.net.TokenResponse;
+import lotcom.zhpan.idea.net.token.TokenResponse;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Streaming;

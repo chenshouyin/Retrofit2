@@ -24,7 +24,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-import lotcom.zhpan.idea.net.BasicResponse;
+import lotcom.zhpan.idea.net.common.BasicResponse;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;

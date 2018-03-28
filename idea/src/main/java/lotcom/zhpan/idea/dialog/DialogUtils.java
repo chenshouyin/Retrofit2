@@ -1,6 +1,8 @@
-package com.cypoem.retrofit;
+package lotcom.zhpan.idea.dialog;
 
 import android.content.Context;
+
+import lotcom.zhpan.idea.R;
 
 /**
  * Created by zhpan on 2017/5/26.

@@ -1,4 +1,4 @@
-package lotcom.zhpan.idea.net;
+package lotcom.zhpan.idea.net.token;
 
 /**
  * Created by zhpan on 2018/3/27.

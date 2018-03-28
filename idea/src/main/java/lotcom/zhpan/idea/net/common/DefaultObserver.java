@@ -1,6 +1,5 @@
 package lotcom.zhpan.idea.net.common;
 
-import android.app.Activity;
 import android.text.TextUtils;
 import android.widget.Toast;
 
@@ -17,7 +16,6 @@ import java.text.ParseException;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import lotcom.zhpan.idea.R;
-import lotcom.zhpan.idea.net.BasicResponse;
 import lotcom.zhpan.idea.net.exception.ServerResponseException;
 import lotcom.zhpan.idea.net.exception.TokenInvalidException;
 import lotcom.zhpan.idea.net.exception.TokenNotExistException;

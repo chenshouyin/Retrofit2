@@ -4,15 +4,14 @@ import android.os.Bundle;
 
 import com.cypoem.retrofit.R;
 import com.cypoem.retrofit.module.response.MeiZi;
-import com.cypoem.retrofit.net.ProgressUtils;
 import com.cypoem.retrofit.net.RetrofitHelper;
 
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import lotcom.zhpan.idea.net.BasicResponse;
 import lotcom.zhpan.idea.net.common.DefaultObserver;
+import lotcom.zhpan.idea.net.common.ProgressUtils;
 
 /**
  * Created by zhpan on 2017/9/30.

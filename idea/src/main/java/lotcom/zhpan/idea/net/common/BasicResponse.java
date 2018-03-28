@@ -1,7 +1,7 @@
-package lotcom.zhpan.idea.net;
+package lotcom.zhpan.idea.net.common;
 
 /**
- *
+ * Created by zhpan on 2017/4/18.
  */
 public class BasicResponse<T> {
 

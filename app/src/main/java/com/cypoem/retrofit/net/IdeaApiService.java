@@ -9,17 +9,14 @@ import com.cypoem.retrofit.module.response.RefreshTokenResponseBean;
 import java.util.List;
 
 import io.reactivex.Observable;
-import lotcom.zhpan.idea.net.BasicResponse;
+import lotcom.zhpan.idea.net.common.BasicResponse;
 import okhttp3.MultipartBody;
-import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
-import retrofit2.http.Streaming;
-import retrofit2.http.Url;
 
 /**
  * Created by dell on 2017/4/1.
@@ -40,14 +37,14 @@ public interface IdeaApiService {
      * @return
      */
     @POST("login.do")
-    Observable<BasicResponse<LoginResponse>> login(@Body LoginRequest request);
+    Observable<LoginResponse> login(@Body LoginRequest request);
 
     /**
      * 刷新token 接口为假接口 并不能返回数据
      * @return
      */
     @POST("refresh_token.do")
-    Observable<BasicResponse<RefreshTokenResponseBean>> refreshToken(@Body RefreshTokenRequest request);
+    Observable<RefreshTokenResponseBean> refreshToken(@Body RefreshTokenRequest request);
 
     @Multipart
     @POST("upload/uploadFile.do")

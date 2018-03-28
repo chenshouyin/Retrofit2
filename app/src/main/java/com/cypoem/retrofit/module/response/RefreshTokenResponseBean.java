@@ -1,7 +1,7 @@
 package com.cypoem.retrofit.module.response;
 
 
-import lotcom.zhpan.idea.net.BasicResponse;
+import lotcom.zhpan.idea.net.common.BasicResponse;
 
 /**
  * Created by zhpan on 2017/10/25.

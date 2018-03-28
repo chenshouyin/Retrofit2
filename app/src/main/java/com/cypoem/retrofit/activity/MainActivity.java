@@ -12,8 +12,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.cypoem.retrofit.R;
+import com.cypoem.retrofit.module.request.LoginRequest;
+import com.cypoem.retrofit.module.response.LoginResponse;
 import com.cypoem.retrofit.module.response.MeiZi;
-import com.cypoem.retrofit.net.ProgressUtils;
 import com.cypoem.retrofit.net.RetrofitHelper;
 
 
@@ -26,13 +27,16 @@ import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import lotcom.zhpan.idea.net.BasicResponse;
+import lotcom.zhpan.idea.BaseActivity;
+import lotcom.zhpan.idea.net.common.BasicResponse;
 import lotcom.zhpan.idea.net.common.Constants;
 import lotcom.zhpan.idea.net.common.DefaultObserver;
+import lotcom.zhpan.idea.net.common.ProgressUtils;
 import lotcom.zhpan.idea.net.download.DownloadListener;
 import lotcom.zhpan.idea.net.download.DownloadUtils;
 import lotcom.zhpan.idea.utils.FileUtils;
 import lotcom.zhpan.idea.utils.LogUtils;
+import lotcom.zhpan.idea.utils.SharedPreferencesHelper;
 import lotcom.zhpan.idea.utils.ToastUtils;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -43,8 +47,9 @@ public class MainActivity extends BaseActivity {
     ProgressBar progressBar;
     TextView mTvPercent;
     private Button btn;
-    private static final String url="http://www.oitsme.com/download/oitsme.apk";
+    private static final String url = "http://www.oitsme.com/download/oitsme.apk";
     private DownloadUtils downloadUtils;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;
@@ -52,17 +57,42 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void init(Bundle savedInstanceState) {
-        progressBar= (ProgressBar) findViewById(R.id.progressBar);
-        mTvPercent=(TextView)findViewById(R.id.tv_percent);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        mTvPercent = (TextView) findViewById(R.id.tv_percent);
         btn = (Button) findViewById(R.id.btn_download);
         downloadUtils = new DownloadUtils();
     }
 
-    //  登录 成功后保存token
+    /**
+     * Post请求，登录成功后保存token
+      */
     public void login(View view) {
-      //  new RequestHelper(this).login();
+        LoginRequest loginRequest = new LoginRequest(this);
+        loginRequest.setUserId("123456");
+        loginRequest.setPassword("123123");
+        RetrofitHelper.getApiService()
+                .login(loginRequest)
+                .subscribeOn(Schedulers.io())
+                .compose(this.<LoginResponse>bindToLifecycle())
+                .compose(ProgressUtils.<LoginResponse>applyProgressBar(this))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DefaultObserver<LoginResponse>() {
+                    @Override
+                    public void onSuccess(LoginResponse response) {
+                        ToastUtils.show("登录成功！获取到token" + response.getToken() + ",可以存储到本地了");
+                        /**
+                         * 可以将这些数据存储到User中，User存储到本地数据库
+                         */
+                        SharedPreferencesHelper.put(MainActivity.this, "token", response.getToken());
+                        SharedPreferencesHelper.put(MainActivity.this, "refresh_token", response.getRefresh_token());
+                        SharedPreferencesHelper.put(MainActivity.this, "refresh_secret", response.getRefresh_secret());
+                    }
+                });
     }
 
+    /**
+     * Get请求
+     */
     public void getData(View view) {
         RetrofitHelper.getApiService()
                 .getMezi()
@@ -87,11 +117,13 @@ public class MainActivity extends BaseActivity {
                 });
     }
 
-    //  上传文件
+    /**
+     * 上传文件
+     */
     public void uploadFile(View view) {
         /********************************方法一**********************************/
         String fileStoreDir = Environment.getExternalStorageDirectory().getAbsolutePath();
-        String filePath = fileStoreDir+"/test/test.txt";
+        String filePath = fileStoreDir + "/test/test.txt";
         FileUtils.createOrExistsFile(filePath);
         //文件路径
         File file = new File(filePath);
@@ -116,7 +148,7 @@ public class MainActivity extends BaseActivity {
                 .uploadFiles(parts)
                 .subscribeOn(Schedulers.io())
                 .compose(this.<BasicResponse>bindToLifecycle())
-                .compose(ProgressUtils.<BasicResponse>applyProgressBar(this,"上传文件..."))
+                .compose(ProgressUtils.<BasicResponse>applyProgressBar(this, "上传文件..."))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DefaultObserver<BasicResponse>() {
                     @Override
@@ -126,6 +158,9 @@ public class MainActivity extends BaseActivity {
                 });
     }
 
+    /**
+     * 开始下载
+     */
     public void download(View view) {
         btn.setClickable(false);
         downloadUtils.download(Constants.DOWNLOAD_URL, new DownloadListener() {
@@ -158,6 +193,16 @@ public class MainActivity extends BaseActivity {
         });
     }
 
+    /**
+     * 取消下载
+     */
+    public void cancelDownload(View view) {
+        if (downloadUtils != null) {
+            downloadUtils.cancelDownload();
+            btn.setClickable(true);
+        }
+    }
+
     private void saveFile(ResponseBody body) {
         String fileName = "oitsme.apk";
         String fileStoreDir = Environment.getExternalStorageDirectory().getAbsolutePath();
@@ -181,18 +226,11 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public void cancelDownload(View view) {
-        if (downloadUtils != null) {
-            downloadUtils.cancelDownload();
-            btn.setClickable(true);
-        }
-    }
-
     private void installApk(File file) {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setDataAndType(Uri.fromFile(file),
-                    "application/vnd.android.package-archive");
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.fromFile(file),
+                "application/vnd.android.package-archive");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }
