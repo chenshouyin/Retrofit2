@@ -105,15 +105,6 @@ public class MainActivity extends BaseActivity {
                     public void onSuccess(List<MeiZi> response) {
                         showToast("请求成功，妹子个数为" + response.size());
                     }
-
-                    /**
-                     * token刷新成功后重新请求数据
-                     */
-                    @Override
-                    public void onTokenUpdateSuccess() {
-                        super.onTokenUpdateSuccess();
-                        getData(null);
-                    }
                 });
     }
 

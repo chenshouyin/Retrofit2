@@ -33,9 +33,6 @@ import static lotcom.zhpan.idea.net.common.DefaultObserver.ExceptionReason.UNKNO
 
 public abstract class DefaultObserver<T> implements Observer<T> {
 
-
-
-
     public DefaultObserver() {
     }
 
@@ -105,8 +102,6 @@ public abstract class DefaultObserver<T> implements Observer<T> {
         }).refreshToken();
     }*/
 
-    public void onTokenUpdateSuccess() {
-    }
 
     protected void showToast(String message) {
         if (TextUtils.isEmpty(message)) {
