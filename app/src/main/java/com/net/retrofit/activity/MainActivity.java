@@ -1,4 +1,4 @@
-package com.cypoem.retrofit.activity;
+package com.net.retrofit.activity;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -11,11 +11,11 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.cypoem.retrofit.R;
-import com.cypoem.retrofit.module.reponse.LoginResponse;
-import com.cypoem.retrofit.module.reponse.MeiZi;
-import com.cypoem.retrofit.module.request.LoginRequest;
-import com.cypoem.retrofit.net.RetrofitHelper;
+import com.net.retrofit.R;
+import com.net.retrofit.module.reponse.LoginResponse;
+import com.net.retrofit.module.reponse.MeiZi;
+import com.net.retrofit.module.request.LoginRequest;
+import com.net.retrofit.net.RetrofitHelper;
 import com.csy.net.net.common.BasicResponse;
 import com.csy.net.net.common.Constants;
 import com.csy.net.net.common.DefaultObserver;

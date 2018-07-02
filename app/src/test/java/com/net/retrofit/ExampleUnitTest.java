@@ -1,4 +1,4 @@
-package com.cypoem.retrofit;
+package com.net.retrofit;
 
 import org.junit.Test;
 

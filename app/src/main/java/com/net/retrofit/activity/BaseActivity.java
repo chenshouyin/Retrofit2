@@ -1,4 +1,4 @@
-package com.cypoem.retrofit.activity;
+package com.net.retrofit.activity;
 
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;

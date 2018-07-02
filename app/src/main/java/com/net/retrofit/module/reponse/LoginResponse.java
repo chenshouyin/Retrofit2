@@ -1,4 +1,4 @@
-package com.cypoem.retrofit.module.reponse;
+package com.net.retrofit.module.reponse;
 
 
 import com.csy.net.net.common.BasicResponse;

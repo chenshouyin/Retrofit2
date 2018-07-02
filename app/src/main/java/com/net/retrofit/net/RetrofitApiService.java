@@ -1,9 +1,9 @@
-package com.cypoem.retrofit.net;
+package com.net.retrofit.net;
 
-import com.cypoem.retrofit.module.reponse.LoginResponse;
-import com.cypoem.retrofit.module.reponse.MeiZi;
-import com.cypoem.retrofit.module.request.LoginRequest;
 import com.csy.net.net.common.BasicResponse;
+import com.net.retrofit.module.reponse.LoginResponse;
+import com.net.retrofit.module.reponse.MeiZi;
+import com.net.retrofit.module.request.LoginRequest;
 
 import java.util.List;
 import java.util.Map;
@@ -11,10 +11,13 @@ import java.util.Map;
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -26,7 +29,15 @@ import retrofit2.http.Query;
  * Created by dell on 2017/4/1.
  */
 
-public interface IdeaApiService {
+public interface RetrofitApiService {
+
+    /**
+     * 添加head也可以是map
+     * @param lang
+     * @return
+     */
+    @GET("/")
+    Call<ResponseBody> foo(@Header("Accept-Language") String lang);
 
     @Headers("Cache-Control: public, max-age=100")
     @GET("福利/10/1")

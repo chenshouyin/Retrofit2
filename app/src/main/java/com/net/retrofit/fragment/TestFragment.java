@@ -1,8 +1,8 @@
-package com.cypoem.retrofit.fragment;
+package com.net.retrofit.fragment;
 
 import android.os.Bundle;
 
-import com.cypoem.retrofit.R;
+import com.net.retrofit.R;
 
 
 /**
@@ -24,7 +24,7 @@ public class TestFragment extends BaseFragment {
 
     public void getData() {
 
-       /* RetrofitApi.getApiService(IdeaApiService.class)
+       /* RetrofitApi.getApiService(RetrofitApiService.class)
                 .getMezi()
                 .compose(this.<BasicResponse<List<MeiZi>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())

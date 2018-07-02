@@ -1,4 +1,4 @@
-package com.cypoem.retrofit;
+package com.net.retrofit;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.cypoem.retrofit", appContext.getPackageName());
+        assertEquals("com.net.retrofit", appContext.getPackageName());
     }
 }
