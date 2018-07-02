@@ -38,6 +38,11 @@ ext {
     retrofit2Version = '2.2.0'
     rxlifecycle='2.1.0'
     gsonVersion = '2.8.0'
+    rxjava2_adapterVersion = '1.0.0'
+    rxjava2_rxandroid = '2.0.1'
+    okhttp3_logging_interceptorVersion = '3.4.1'
+
+
 
     releaseVersionCode = 1
     releaseVersionName = '1.0.0'

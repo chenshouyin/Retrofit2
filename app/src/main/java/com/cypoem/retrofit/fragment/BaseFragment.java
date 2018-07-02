@@ -8,11 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.trello.rxlifecycle2.components.RxFragment;
-import com.zhpan.idea.utils.ToastUtils;
+import com.csy.net.utils.ToastUtils;
 
 
 /**
- * Created by zhpan on 2017/4/22.
+ * Created by csy on 2017/4/22.
  */
 
 public abstract class BaseFragment extends RxFragment {

@@ -3,7 +3,7 @@ package com.cypoem.retrofit.net;
 import com.cypoem.retrofit.module.reponse.LoginResponse;
 import com.cypoem.retrofit.module.reponse.MeiZi;
 import com.cypoem.retrofit.module.request.LoginRequest;
-import com.zhpan.idea.net.common.BasicResponse;
+import com.csy.net.net.common.BasicResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +11,6 @@ import java.util.Map;
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
@@ -22,8 +21,6 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.PartMap;
 import retrofit2.http.Query;
-import retrofit2.http.Streaming;
-import retrofit2.http.Url;
 
 /**
  * Created by dell on 2017/4/1.

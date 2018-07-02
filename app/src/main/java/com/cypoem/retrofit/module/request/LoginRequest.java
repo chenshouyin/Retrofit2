@@ -4,11 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.telephony.TelephonyManager;
 
-import com.zhpan.idea.utils.KeyTools;
+import com.csy.net.utils.KeyTools;
 
 
 /**
- * Created by zhpan on 2017/10/25.
+ * Created by csy on 2017/10/25.
  * Description:登录请求实体类
  */
 

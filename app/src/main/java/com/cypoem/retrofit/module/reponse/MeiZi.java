@@ -1,7 +1,7 @@
 package com.cypoem.retrofit.module.reponse;
 
 /**
- * Created by zhpan on 2017/9/30.
+ * Created by csy on 2017/9/30.
  */
 
 public class MeiZi {

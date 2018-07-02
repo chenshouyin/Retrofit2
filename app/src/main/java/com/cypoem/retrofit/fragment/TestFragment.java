@@ -6,7 +6,7 @@ import com.cypoem.retrofit.R;
 
 
 /**
- * Created by zhpan on 2017/9/30.
+ * Created by csy on 2017/9/30.
  * Fragment没有运行 内容仅供参考
  */
 
@@ -24,7 +24,7 @@ public class TestFragment extends BaseFragment {
 
     public void getData() {
 
-       /* IdeaApi.getApiService(IdeaApiService.class)
+       /* RetrofitApi.getApiService(IdeaApiService.class)
                 .getMezi()
                 .compose(this.<BasicResponse<List<MeiZi>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())

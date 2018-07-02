@@ -1,11 +1,11 @@
 package com.cypoem.retrofit.module.request;
 
 
-import com.zhpan.idea.utils.SharedPreferencesHelper;
-import com.zhpan.idea.utils.Utils;
+import com.csy.net.utils.SharedPreferencesHelper;
+import com.csy.net.utils.Utils;
 
 /**
- * Created by zhpan on 2017/10/25.
+ * Created by csy on 2017/10/25.
  * Description:
  */
 

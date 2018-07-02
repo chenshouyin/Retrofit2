@@ -1,10 +1,10 @@
 package com.cypoem.retrofit.module.reponse;
 
 
-import com.zhpan.idea.net.common.BasicResponse;
+import com.csy.net.net.common.BasicResponse;
 
 /**
- * Created by zhpan on 2017/10/25.
+ * Created by csy on 2017/10/25.
  * Description:
  */
 
